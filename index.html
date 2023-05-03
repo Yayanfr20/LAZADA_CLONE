@@ -125,43 +125,56 @@
       </div>
       <div class="d-flex justify-content-around row">
         <a
-          href=""
           style="width: 10rem"
+          id="Pakaian"
           class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
           ><img src="images/kategori/pakaian.svg" width="30" alt="" />
           Pakaian</a
         >
         <a
-          href=""
           style="width: 10rem"
+          id="Aksesoris"
           class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
-          ><img src="images/kategori/sepatu.svg" width="30" alt="" /> Sepatu</a
+          ><img src="images/kategori/sepatu.svg" width="30" alt="" />
+          Aksesoris</a
         >
         <a
-          href=""
           style="width: 10rem"
+          id="Alat-Tulis"
+          data-category="Alat-Tulis"
           class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
-          ><img src="images/kategori/sandal.png" width="30" alt="" /> Sandal</a
+          ><img src="images/kategori/sandal.png" width="30" alt="" /> Alat
+          Tulis</a
         >
         <a
-          href=""
           style="width: 10rem"
+          id="Elektronik"
+          data-category="Elektronik"
           class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
           ><img src="images/kategori/elektronik.png" width="30" alt="" />
           Elektronik</a
         >
         <a
-          href=""
           style="width: 10rem"
+          id="Olahraga"
+          data-category="Olahraga"
           class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
           ><img src="images/kategori/makanan.jpeg" width="30" alt="" />
-          Makanan</a
+          Olahraga</a
         >
         <a
-          href=""
           style="width: 10rem"
+          id="Buku"
+          data-category="Buku"
           class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
           ><img src="images/kategori/buku.jpg" width="30" alt="" /> Buku</a
+        >
+        <a
+          style="width: 10rem"
+          id="SemuaCategory"
+          class="btn btn-white mb-3 d-flex justify-content-center align-items-center"
+        >
+          Semua</a
         >
       </div>
     </div>
@@ -170,7 +183,12 @@
       <div class="row">
         <h3><i class="bi bi-list-nested"></i> Paling Populer</h3>
       </div>
-      <div class="row d-flex justify-content-around" id="box-products"></div>
+      <div id="loading" class="mt-5 d-flex justify-content-center">
+        <div class="spinner-border" style="color: #f57224" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div class="row d-none justify-content-around" id="box-products"></div>
     </div>
     <!-- sidebar -->
     <div
@@ -263,6 +281,249 @@
       integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
       crossorigin="anonymous"
     ></script>
-    <script src="js/main.js"></script>
+    <script>
+      function loadData() {
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+          <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+          <img src="images/${data[x].images}" class="card-img-top" alt="...">
+          <div class="card-body">
+              <h6>${data[x].name}</h6>
+              <p style="color: #f57224;">Rp.${data[x].price}</p>
+              <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+          </div>
+      </a>
+      `);
+            }
+
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1500);
+          },
+        });
+      }
+
+      loadData();
+
+      $("#SemuaCategory").click(function (e) {
+        e.preventDefault();
+        $("#box-products").html("");
+        loadData();
+      });
+
+      $("#Pakaian").click(function (e) {
+        e.preventDefault();
+        $("#box-products").removeClass("d-flex");
+        $("#box-products").addClass("d-none");
+        $("#loading").removeClass("d-none");
+        $("#loading").addClass("d-flex");
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php?category=Pakaian",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            $("#box-products").html("");
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+              <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+                  <img src="images/${data[x].images}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                      <h6>${data[x].name}</h6>
+                      <p style="color: #f57224;">Rp.${data[x].price}</p>
+                      <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+                  </div>
+              </a>
+              `);
+            }
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1500);
+          },
+        });
+      });
+      $("#Aksesoris").click(function (e) {
+        e.preventDefault();
+        $("#box-products").removeClass("d-flex");
+        $("#box-products").addClass("d-none");
+        $("#loading").removeClass("d-none");
+        $("#loading").addClass("d-flex");
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php?category=Aksesoris",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            $("#box-products").html("");
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+              <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+                  <img src="images/${data[x].images}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                      <h6>${data[x].name}</h6>
+                      <p style="color: #f57224;">Rp.${data[x].price}</p>
+                      <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+                  </div>
+              </a>
+              `);
+            }
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1500);
+          },
+        });
+      });
+      $("#Alat-Tulis").click(function (e) {
+        e.preventDefault();
+        $("#box-products").removeClass("d-flex");
+        $("#box-products").addClass("d-none");
+        $("#loading").removeClass("d-none");
+        $("#loading").addClass("d-flex");
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php?category=Alat Tulis",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            $("#box-products").html("");
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+              <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+                  <img src="images/${data[x].images}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                      <h6>${data[x].name}</h6>
+                      <p style="color: #f57224;">Rp.${data[x].price}</p>
+                      <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+                  </div>
+              </a>
+              `);
+            }
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1000);
+          },
+        });
+      });
+      $("#Elektronik").click(function (e) {
+        e.preventDefault();
+        $("#box-products").removeClass("d-flex");
+        $("#box-products").addClass("d-none");
+        $("#loading").removeClass("d-none");
+        $("#loading").addClass("d-flex");
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php?category=Elektronik",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            $("#box-products").html("");
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+              <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+                  <img src="images/${data[x].images}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                      <h6>${data[x].name}</h6>
+                      <p style="color: #f57224;">Rp.${data[x].price}</p>
+                      <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+                  </div>
+              </a>
+              `);
+            }
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1500);
+          },
+        });
+      });
+      $("#Olahraga").click(function (e) {
+        e.preventDefault();
+        $("#box-products").removeClass("d-flex");
+        $("#box-products").addClass("d-none");
+        $("#loading").removeClass("d-none");
+        $("#loading").addClass("d-flex");
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php?category=Olahraga",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            $("#box-products").html("");
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+              <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+                  <img src="images/${data[x].images}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                      <h6>${data[x].name}</h6>
+                      <p style="color: #f57224;">Rp.${data[x].price}</p>
+                      <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+                  </div>
+              </a>
+              `);
+            }
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1500);
+          },
+        });
+      });
+      $("#Buku").click(function (e) {
+        e.preventDefault();
+        $("#box-products").removeClass("d-flex");
+        $("#box-products").addClass("d-none");
+        $("#loading").removeClass("d-none");
+        $("#loading").addClass("d-flex");
+        $.ajax({
+          type: "get",
+          url: "http://localhost/learn-create-eccomerce/api/products.php?category=Buku",
+          dataType: "json",
+          success: function (response) {
+            let data = response.data;
+            $("#box-products").html("");
+            for (let x = 0; x < data.length; x++) {
+              $("#box-products").append(`
+              <a href="" class="card mb-3 nav-link" style="width: 10rem;">
+                  <img src="images/${data[x].images}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                      <h6>${data[x].name}</h6>
+                      <p style="color: #f57224;">Rp.${data[x].price}</p>
+                      <small style="font-size: 10px;color: grey;">Sold Out(${data[x].sold_out})</small>
+                  </div>
+              </a>
+              `);
+            }
+            setTimeout(function () {
+              $("#box-products").removeClass("d-none");
+              $("#loading").removeClass("d-flex");
+              $("#loading").addClass("d-none");
+              $("#box-products").addClass("d-flex");
+            }, 1500);
+          },
+        });
+      });
+    </script>
   </body>
 </html>

@@ -26,17 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $result = mysqli_query($conn, $query);
     $data = array();
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $data[] = $row;
+     while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
     }
 
     $response = [
-        "status" => 200,
-        'message' => 'Data berhasil diambil',
-        "data" => $data
+            "status" => 200,
+            'message' => 'Data berhasil diambil',
+            "data" => $data
     ];
     header('Content-Type: application/json');
     echo json_encode($response);
+    
 }
 
 ?>
