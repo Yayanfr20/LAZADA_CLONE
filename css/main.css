@@ -73,6 +73,29 @@ html body {
   box-shadow: 4px 1px 7px grey;
 }
 
+.product-detail {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+#quantity {
+  width: 100px;
+  height: 40px;
+  border: none;
+  text-align: center;
+}
+
+.form-login {
+  width: 600px;
+  height: auto;
+  background-color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 @media screen and (max-width: 768px) {
   .navigation div .form-search {
     display: none;
@@ -80,5 +103,9 @@ html body {
 
   .navigation div .btn-search-mobile {
     display: block;
+  }
+
+  .form-login {
+    width: 90%;
   }
 }
